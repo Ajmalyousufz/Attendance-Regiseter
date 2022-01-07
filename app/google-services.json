@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "634217234322",
+    "project_id": "attendance-register-859c3",
+    "storage_bucket": "attendance-register-859c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:634217234322:android:8d62fc616faad532bc8b4b",
+        "android_client_info": {
+          "package_name": "com.ajmalyousufza.attendanceregister"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "634217234322-p2vuclgt4bmgolede7f34jmhla75vvln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAe8XIMqBsNLrrGGQWKZLy7QSifeOa34l4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "634217234322-p2vuclgt4bmgolede7f34jmhla75vvln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
