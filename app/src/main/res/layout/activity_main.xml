@@ -44,7 +44,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="schoolUdpate" />
+                    android:text="Udpate\nname" />
+                <ProgressBar
+                    android:id="@+id/updateprogress"
+                    android:layout_width="30dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="30dp"/>
 
             </LinearLayout>
 
@@ -61,50 +67,63 @@
 
     <LinearLayout
 
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
         android:orientation="vertical"
-        app:layout_constraintVertical_bias=".1"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:layout_constraintVertical_bias=".1">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="20dp"
-        android:weightSum="2">
-        <EditText
-            android:text="Enter Class"
-            android:id="@+id/student_class"
-            android:inputType="number"
-            android:padding="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:text="Get list"
-            android:id="@+id/getlist_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/student_class"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter Class"
+                android:inputType="number"
+                android:padding="10dp" />
+
+            <Button
+                android:id="@+id/getlist_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get list" />
+
+            <ProgressBar
+                android:id="@+id/getlistprogress"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/student_recyclerview"
             android:layout_width="match_parent"
-            android:background="#DAD4D4"
-            android:padding="10dp"
+            android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:layout_height="wrap_content"/>
+            android:background="#DAD4D4"
+            android:padding="10dp" />
 
-        <Button
-            android:layout_gravity="bottom"
-            android:id="@+id/submit_btn"
-            android:layout_margin="20dp"
-            android:text="submit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
+    <Button
+        android:id="@+id/submit_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:text="submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

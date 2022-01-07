@@ -66,7 +66,7 @@ public class AddStudent extends AppCompatActivity {
             stdatalist.put("class",stdClass);
 
             firestore.collection("Admin").document(uid)
-                    .collection("StudentDetailes").document(stdClass)
+                    .collection(stdClass).document()
                     .set(stdatalist).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
