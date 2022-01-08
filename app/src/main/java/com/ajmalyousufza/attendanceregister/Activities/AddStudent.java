@@ -20,8 +20,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Objects;
 
 public class AddStudent extends AppCompatActivity {
@@ -46,6 +48,12 @@ public class AddStudent extends AppCompatActivity {
         progressBar = findViewById(R.id.prgressbarr);
         progressBar.setVisibility(View.GONE);
 
+        Date c = Calendar.getInstance().getTime();
+        SimpleDateFormat df = new SimpleDateFormat("MMMyyyy", Locale.getDefault());
+        SimpleDateFormat dmy = new SimpleDateFormat("dd", Locale.getDefault());
+        String formattedDate = df.format(c);
+        String formattedDmy = dmy.format(c);
+
         auth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
@@ -66,7 +74,8 @@ public class AddStudent extends AppCompatActivity {
             stdatalist.put("class",stdClass);
 
             firestore.collection("Admin").document(uid)
-                    .collection(stdClass).document()
+                    .collection(stdClass).document(stdName).collection(formattedDate)
+                    .document(formattedDmy)
                     .set(stdatalist).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

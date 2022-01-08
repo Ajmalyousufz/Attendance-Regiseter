@@ -63,7 +63,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
 
         Date c = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("MMMyyyy", Locale.getDefault());
-        SimpleDateFormat dmy = new SimpleDateFormat("ddMMMyyyy", Locale.getDefault());
+        SimpleDateFormat dmy = new SimpleDateFormat("dd", Locale.getDefault());
         String formattedDate = df.format(c);
         String formattedDmy = dmy.format(c);
         holder.present=0;
@@ -151,6 +151,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.ViewHold
                             .document(userid).collection(s1).document(holder.st_name.getText().toString())
                             .collection(formattedDate).document(formattedDmy).set(amap);
 
+                    Toast.makeText(context, "Absent", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     holder.present=1;

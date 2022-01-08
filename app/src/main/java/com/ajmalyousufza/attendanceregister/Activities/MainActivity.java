@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -76,10 +77,13 @@ public class MainActivity extends AppCompatActivity {
         listDataModels = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         String stclass = studentClass.getText().toString();
+        studentClass.setShowSoftInputOnFocus(true);
         studentAdapter = new StudentAdapter(this,listDataModels,stclass);
         recyclerView.setAdapter(studentAdapter);
         currentDate = findViewById(R.id.datetext);
         //studentAdapter.notifyDataSetChanged();
+
+
 
         // Storing data into SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
@@ -89,11 +93,13 @@ public class MainActivity extends AppCompatActivity {
 
         Date c = Calendar.getInstance().getTime();
 
-        SimpleDateFormat df = new SimpleDateFormat("dd/ MMM/ yyyy", Locale.getDefault());
-        SimpleDateFormat dmy = new SimpleDateFormat("ddMMMyyyy", Locale.getDefault());
+        SimpleDateFormat dat = new SimpleDateFormat("dd/ MMM /yyyy", Locale.getDefault());
+        SimpleDateFormat df = new SimpleDateFormat("MMMyyyy", Locale.getDefault());
+        SimpleDateFormat dmy = new SimpleDateFormat("dd", Locale.getDefault());
         String formattedDmy = dmy.format(c);
         String formattedDate = df.format(c);
-        currentDate.setText(formattedDate);
+        String formaDate = dat.format(c);
+        currentDate.setText(formaDate);
         //           DateFormat dateFormat = new SimpleDateFormat("MM");
 //            Date date = new Date();
 //            Log.d("Month",dateFormat.format(date));
@@ -106,10 +112,11 @@ public class MainActivity extends AppCompatActivity {
 
         getListbtn.setOnClickListener(view -> {
 
-            if(isSubmitButtonClickec){
-
+            if(TextUtils.isEmpty(studentClass.getText().toString())){
+                Toast.makeText(MainActivity.this, "Plese enter class", Toast.LENGTH_SHORT).show();
             }
-
+            else
+            {
             isSubmitButtonClickec=false;
             myEdit.putBoolean("submitclicked",isSubmitButtonClickec);
 
@@ -123,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             firebaseFirestore.collection("Admin")
                     .document(userid).collection(studentClass.getText().toString())
+                    .document(formattedDate).collection(formattedDmy)
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -147,8 +155,10 @@ public class MainActivity extends AppCompatActivity {
                     }}
                 }
             });
-        });
+        }});
 
+        //String useridd = firebaseAuth.getCurrentUser().getUid();
+        //String schoolNamee = schoolname.getText().toString();
 
 
         firebaseFirestore.collection("Admin")
@@ -158,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 if(task.isSuccessful()){
                     progressBar.setVisibility(View.GONE);
                     DocumentSnapshot document = task.getResult();
-                    schoolname.setText(document.getData().values().toString());
+                    schoolname.setText(document.getString("schoolName"));
                 }
             }
         });
@@ -177,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     progressBar.setVisibility(View.GONE);
                     Toast.makeText(MainActivity.this, "School name udated", Toast.LENGTH_SHORT).show();
-                    schoolname.setFocusable(false);
+                    //schoolname.setFocusable(false);
                 }
             });
         });
