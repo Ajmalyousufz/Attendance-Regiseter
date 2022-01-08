@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AttendanceRegister">
         <activity
+            android:name=".Activities.ViewAllActivity"
+            android:exported="false" />
+        <activity
             android:name=".Activities.AddStudent"
             android:exported="false" />
         <activity
@@ -23,7 +26,7 @@
         </activity>
         <activity
             android:name=".Activities.MainActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
     </application>
 
 </manifest>

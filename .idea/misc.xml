@@ -5,8 +5,10 @@
       <map>
         <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/activity_add_student.xml" value="0.17300724637681159" />
         <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/activity_login.xml" value="0.1793478260869565" />
-        <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/activity_main.xml" value="0.1793478260869565" />
+        <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/activity_main.xml" value="0.176" />
+        <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/activity_view_all.xml" value="0.16" />
         <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/student_list_item.xml" value="0.2" />
+        <entry key="..\:/Users/Muhammed ajmal y/AndroidStudioProjects/AttendanceRegister/app/src/main/res/layout/view_all_item.xml" value="0.17300724637681159" />
       </map>
     </option>
   </component>

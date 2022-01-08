@@ -7,11 +7,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ajmalyousufza.attendanceregister.Adapters.StudentAdapter;
@@ -28,32 +30,44 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
     EditText schoolname,studentClass;
-    Button schoolupdate,add_student,getListbtn;
+    Button schoolupdate,add_student,getListbtn,submitButton,viewAll;
     FirebaseAuth firebaseAuth;
     ProgressBar progressBar,getLitProgressbar;
     FirebaseFirestore firebaseFirestore;
     RecyclerView recyclerView;
     StudentAdapter studentAdapter;
+    TextView currentDate;
+    String stclasss;
+    Boolean isSubmitButtonClickec = false;
     List<StudentListDataModel> listDataModels;
+    List<String> listOfsubmittd;
+    SharedPreferences sh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listOfsubmittd = new ArrayList<>();
         firebaseAuth = FirebaseAuth.getInstance();
         progressBar = findViewById(R.id.updateprogress);
         getLitProgressbar = findViewById(R.id.getlistprogress);
         getLitProgressbar.setVisibility(View.GONE);
+//        submitButton =findViewById(R.id.submit_btn);
         firebaseFirestore = FirebaseFirestore.getInstance();
         schoolname = findViewById(R.id.schoolName);
+        viewAll = findViewById(R.id.view_all);
         studentClass = findViewById(R.id.student_class);
         getListbtn = findViewById(R.id.getlist_btn);
         schoolupdate = findViewById(R.id.schoolNameUpdate_btn);
@@ -61,9 +75,29 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.student_recyclerview);
         listDataModels = new ArrayList<>();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        studentAdapter = new StudentAdapter(this,listDataModels);
+        String stclass = studentClass.getText().toString();
+        studentAdapter = new StudentAdapter(this,listDataModels,stclass);
         recyclerView.setAdapter(studentAdapter);
+        currentDate = findViewById(R.id.datetext);
         //studentAdapter.notifyDataSetChanged();
+
+        // Storing data into SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MySharedPref",MODE_PRIVATE);
+
+// Creating an Editor object to edit(write to the file)
+        SharedPreferences.Editor myEdit = sharedPreferences.edit();
+
+        Date c = Calendar.getInstance().getTime();
+
+        SimpleDateFormat df = new SimpleDateFormat("dd/ MMM/ yyyy", Locale.getDefault());
+        SimpleDateFormat dmy = new SimpleDateFormat("ddMMMyyyy", Locale.getDefault());
+        String formattedDmy = dmy.format(c);
+        String formattedDate = df.format(c);
+        currentDate.setText(formattedDate);
+        //           DateFormat dateFormat = new SimpleDateFormat("MM");
+//            Date date = new Date();
+//            Log.d("Month",dateFormat.format(date));
+//            currentMonth = dateFormat.format(date);
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -71,13 +105,28 @@ public class MainActivity extends AppCompatActivity {
         String userid = firebaseAuth.getCurrentUser().getUid();
 
         getListbtn.setOnClickListener(view -> {
+
+            if(isSubmitButtonClickec){
+
+            }
+
+            isSubmitButtonClickec=false;
+            myEdit.putBoolean("submitclicked",isSubmitButtonClickec);
+
             getLitProgressbar.setVisibility(View.VISIBLE);
-            String stclass = studentClass.getText().toString();
+            stclasss = studentClass.getText().toString();
+
+            myEdit.putString("stclass", stclasss);
+
+            myEdit.commit();
+            myEdit.apply();
+
             firebaseFirestore.collection("Admin")
-                    .document(userid).collection(stclass)
+                    .document(userid).collection(studentClass.getText().toString())
                     .get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                     if(task.isSuccessful()){
                     if(task.getResult().size()<=0){
                         getLitProgressbar.setVisibility(View.GONE);
@@ -85,16 +134,17 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this, "Class "+stclass+" and there students Not Added", Toast.LENGTH_SHORT).show();
                     }
                     else{
-                    if(task.isSuccessful()){
-                        recyclerView.setVisibility(View.VISIBLE);
+                        listDataModels.clear();
                         getLitProgressbar.setVisibility(View.GONE);
                         for (QueryDocumentSnapshot document : task.getResult()){
+                            //recyclerView.clearOnChildAttachStateChangeListeners();
                             StudentListDataModel city = document.toObject(StudentListDataModel.class);
                             listDataModels.add(city);
-                            studentAdapter.notifyDataSetChanged();
+                            recyclerView.setVisibility(View.VISIBLE);
+                             studentAdapter.notifyDataSetChanged();
                         }
 
-                    }}}
+                    }}
                 }
             });
         });
@@ -135,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
         add_student.setOnClickListener(view -> {
             startActivity(new Intent(MainActivity.this,AddStudent.class));
         });
+
+        viewAll.setOnClickListener(view -> {
+            startActivity(new Intent(MainActivity.this,ViewAllActivity.class));
+        });
+
 
     }
 }
